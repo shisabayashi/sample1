@@ -1,0 +1,8 @@
+# cli.php
+$loader->registerNamespaces(
+    [
+        "Lib\\PHP_"   => __DIR__ ."/library/php_query/",
+    ]
+);
+
+# 保存時に日付ではなく、回を指定する
