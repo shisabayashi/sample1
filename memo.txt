@@ -6,3 +6,22 @@ $loader->registerNamespaces(
 );
 
 # 保存時に日付ではなく、回を指定する
+public function mainAction()
+    {
+        $HTMLData = file_get_contents("https://www.mizuhobank.co.jp/takarakuji/loto/loto6/index.html");
+        $phpQueryObj = phpQuery::newDocument($HTMLData);
+
+        //alnCenter bgf7f7f7
+        echo $phpQueryObj[".alnCenter.bgf7f7f7:eq(0)"]->text() .PHP_EOL;
+        echo $phpQueryObj["td.alnCenter:eq(0)"]->text() .PHP_EOL;
+
+        echo $phpQueryObj[".alnCenter.extension:eq(0)"]->text() .PHP_EOL;
+        echo $phpQueryObj[".alnCenter.extension:eq(1)"]->text() .PHP_EOL;
+        echo $phpQueryObj[".alnCenter.extension:eq(2)"]->text() .PHP_EOL;
+        echo $phpQueryObj[".alnCenter.extension:eq(3)"]->text() .PHP_EOL;
+        echo $phpQueryObj[".alnCenter.extension:eq(4)"]->text() .PHP_EOL;
+        echo $phpQueryObj[".alnCenter.extension:eq(5)"]->text() .PHP_EOL;
+        echo $phpQueryObj[".alnCenter.extension.green:eq(0)"]->text() .PHP_EOL;
+
+        echo "END" .PHP_EOL;
+    }
