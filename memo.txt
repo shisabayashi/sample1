@@ -1,3 +1,5 @@
+# 番号発行日が最新データと同じ場合かつ、18時以降だったら第何回の回数を+1する
+
 # cli.php
 $loader->registerNamespaces(
     [
