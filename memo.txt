@@ -11,9 +11,19 @@ public function mainAction()
         $HTMLData = file_get_contents("https://www.mizuhobank.co.jp/takarakuji/loto/loto6/index.html");
         $phpQueryObj = phpQuery::newDocument($HTMLData);
 
-        //alnCenter bgf7f7f7
-        echo $phpQueryObj[".alnCenter.bgf7f7f7:eq(0)"]->text() .PHP_EOL;
-        echo $phpQueryObj["td.alnCenter:eq(0)"]->text() .PHP_EOL;
+        //回数
+        //echo $phpQueryObj[".alnCenter.bgf7f7f7:eq(0)"]->text() .PHP_EOL;
+        $rowNumOfTimes = $phpQueryObj[".alnCenter.bgf7f7f7:eq(0)"]->text();
+        $numOfTimes = preg_replace('/[^0-9]/', '', $rowNumOfTimes);
+        echo '回数: ' .$numOfTimes .PHP_EOL;
+
+        // 日付
+        //echo $phpQueryObj["td.alnCenter:eq(0)"]->text() .PHP_EOL;
+        $rowDate = $phpQueryObj["td.alnCenter:eq(0)"]->text();
+        $format = 'Y年m月d日';
+        $date = DateTime::createFromFormat($format, $rowDate);
+        //echo $date->format('Y-m-d 15:00:00') .PHP_EOL;
+        echo '日付: ' .$date->format('Y-m-d') .PHP_EOL;
 
         echo $phpQueryObj[".alnCenter.extension:eq(0)"]->text() .PHP_EOL;
         echo $phpQueryObj[".alnCenter.extension:eq(1)"]->text() .PHP_EOL;
@@ -21,7 +31,12 @@ public function mainAction()
         echo $phpQueryObj[".alnCenter.extension:eq(3)"]->text() .PHP_EOL;
         echo $phpQueryObj[".alnCenter.extension:eq(4)"]->text() .PHP_EOL;
         echo $phpQueryObj[".alnCenter.extension:eq(5)"]->text() .PHP_EOL;
-        echo $phpQueryObj[".alnCenter.extension.green:eq(0)"]->text() .PHP_EOL;
+
+        // ボーナス数字
+        //echo $phpQueryObj[".alnCenter.extension.green:eq(0)"]->text() .PHP_EOL;
+        $rowBonus = $phpQueryObj[".alnCenter.extension.green:eq(0)"]->text();
+        $bouns = preg_replace('/[^0-9]/', '', $rowBonus);
+        echo 'ボーナス数字: ' .$bouns .PHP_EOL;
 
         echo "END" .PHP_EOL;
     }
