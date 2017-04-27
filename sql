@@ -31,6 +31,8 @@ create table T_EVENT_NUMBER
 	UPDATE_DATE datetime default CURRENT_TIMESTAMP null,
 	INSERT_DATE datetime default CURRENT_TIMESTAMP null,
 	ACTIVE_FLAG varchar(1) default 'Y' null,
+	constraint T_EVENT_NUMBER_EVENT_NUMBER_LOTO_TYPE_ID_pk
+		unique (EVENT_NUMBER, LOTO_TYPE_ID),
 	constraint T_EVENT_NUMBER_M_LOTO_TYPE_ID_fk
 		foreign key (LOTO_TYPE_ID) references loto.M_LOTO_TYPE (ID)
 )
@@ -39,6 +41,8 @@ create table T_EVENT_NUMBER
 create index T_EVENT_NUMBER_M_LOTO_TYPE_ID_fk
 	on T_EVENT_NUMBER (LOTO_TYPE_ID)
 ;
+
+
 
 ###
 
