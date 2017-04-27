@@ -32,9 +32,11 @@ create table t_event_number
 	event_number int(7) null,
 	loto_date date null,
 	loto_type_id int(2) null,
-	update_date datetime default current_timestamp null,
-	insert_date datetime default current_timestamp null,
+	update_date datetime default CURRENT_TIMESTAMP null,
+	insert_date datetime default CURRENT_TIMESTAMP null,
 	active_flag varchar(1) default 'y' null,
+	constraint t_event_number_event_number_uindex
+		unique (event_number, loto_type_id),
 	constraint t_event_number_m_loto_type_id_fk
 		foreign key (loto_type_id) references loto.m_loto_type (id)
 )
