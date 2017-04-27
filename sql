@@ -1,3 +1,7 @@
+# my.conf修正
+[mysqld]
+lower_case_table_names=1
+
 # mysql root実行
 create database loto;
 
@@ -7,76 +11,74 @@ GRANT ALL PRIVILEGES ON loto.* TO u_loto@'localhost' IDENTIFIED BY 'aaaaa' WITH 
 
 # table 作成
 -- auto-generated definition
-create table M_LOTO_TYPE
+create table m_loto_type
 (
-	ID int(2) not null
+	id int(2) not null
 		primary key,
-	LOTO_TYPE_NAME varchar(30) null,
-	UPDATE_DATE datetime default CURRENT_TIMESTAMP null,
-	INSERT_DATE datetime default CURRENT_TIMESTAMP null,
-	ACTIVE_FLAG varchar(1) default 'Y' null
-)ENGINE=InnoDB DEFAULT CHARSET=utf8
+	loto_type_name varchar(30) null,
+	update_date datetime default current_timestamp null,
+	insert_date datetime default current_timestamp null,
+	active_flag varchar(1) default 'y' null
+)engine=innodb default charset=utf8
 ;
 
 ###
 
 -- auto-generated definition
-create table T_EVENT_NUMBER
+create table t_event_number
 (
-	ID int(7) not null auto_increment
+	id int(7) not null auto_increment
 		primary key,
-	EVENT_NUMBER int(7) null,
-	LOTO_DATE date null,
-	LOTO_TYPE_ID int(2) null,
-	UPDATE_DATE datetime default CURRENT_TIMESTAMP null,
-	INSERT_DATE datetime default CURRENT_TIMESTAMP null,
-	ACTIVE_FLAG varchar(1) default 'Y' null,
-	constraint T_EVENT_NUMBER_EVENT_NUMBER_LOTO_TYPE_ID_pk
-		unique (EVENT_NUMBER, LOTO_TYPE_ID),
-	constraint T_EVENT_NUMBER_M_LOTO_TYPE_ID_fk
-		foreign key (LOTO_TYPE_ID) references loto.M_LOTO_TYPE (ID)
+	event_number int(7) null,
+	loto_date date null,
+	loto_type_id int(2) null,
+	update_date datetime default current_timestamp null,
+	insert_date datetime default current_timestamp null,
+	active_flag varchar(1) default 'y' null,
+	constraint t_event_number_m_loto_type_id_fk
+		foreign key (loto_type_id) references loto.m_loto_type (id)
 )
 ;
 
-create index T_EVENT_NUMBER_M_LOTO_TYPE_ID_fk
-	on T_EVENT_NUMBER (LOTO_TYPE_ID)
+create index t_event_number_m_loto_type_id_fk
+	on t_event_number (loto_type_id)
 ;
-
-
 
 ###
 
 -- auto-generated definition
-create table T_LOTTERY_RESULT
+create table t_lottery_result
 (
-	ID int(7) not null auto_increment
+	id int(7) not null auto_increment
 		primary key,
-	EVENT_NUMBER_ID int(7) null,
-	LOTO_NUBERS varchar(30) null,
-	BONUS_NUBERS varchar(15) null,
-	UPDATE_DATE datetime default CURRENT_TIMESTAMP null,
-	INSERT_DATE datetime default CURRENT_TIMESTAMP null,
-	ACTIVE_FLAG varchar(1) default 'Y' null,
-	constraint T_LOTTERY_RESULT_T_EVENT_NUMBER_ID_fk
-		foreign key (EVENT_NUMBER_ID) references loto.T_EVENT_NUMBER (ID)
+	event_number_id int(7) null,
+	loto_nubers varchar(30) null,
+	bonus_nubers varchar(15) null,
+	update_date datetime default current_timestamp null,
+	insert_date datetime default current_timestamp null,
+	active_flag varchar(1) default 'y' null,
+	constraint t_lottery_result_t_event_number_id_fk
+		foreign key (event_number_id) references loto.t_event_number (id)
 )
 ;
 
-create index T_LOTTERY_RESULT_T_EVENT_NUMBER_ID_fk
-	on T_LOTTERY_RESULT (EVENT_NUMBER_ID)
+create index t_lottery_result_t_event_number_id_fk
+	on t_lottery_result (event_number_id)
 ;
+
+
 
 # view 作成
-CREATE VIEW V_LATEST_EVENT AS
-  SELECT
-    `l1`.`LOTO_TYPE_ID` AS `LOTO_TYPE_ID`,
-    `l1`.`LOTO_DATE`    AS `LOTO_DATE`,
-    `l1`.`EVENT_NUMBER` AS `EVENT_NUMBER`
-  FROM (`loto`.`T_EVENT_NUMBER` `l1`
-    JOIN (SELECT
-            `loto`.`T_EVENT_NUMBER`.`LOTO_TYPE_ID`      AS `LOTO_TYPE_ID`,
-            max(`loto`.`T_EVENT_NUMBER`.`EVENT_NUMBER`) AS `MAX_EVENT_NUMBER`
-          FROM `loto`.`T_EVENT_NUMBER`
-          GROUP BY `loto`.`T_EVENT_NUMBER`.`LOTO_TYPE_ID`) `l2`)
-  WHERE ((`l1`.`LOTO_TYPE_ID` = `l2`.`LOTO_TYPE_ID`) AND (`l1`.`EVENT_NUMBER` = `l2`.`MAX_EVENT_NUMBER`));
+create view v_latest_event as
+  select
+    `l1`.`loto_type_id` as `loto_type_id`,
+    `l1`.`loto_date`    as `loto_date`,
+    `l1`.`event_number` as `event_number`
+  from (`loto`.`t_event_number` `l1`
+    join (select
+            `loto`.`t_event_number`.`loto_type_id`      as `loto_type_id`,
+            max(`loto`.`t_event_number`.`event_number`) as `max_event_number`
+          from `loto`.`t_event_number`
+          group by `loto`.`t_event_number`.`loto_type_id`) `l2`)
+  where ((`l1`.`loto_type_id` = `l2`.`loto_type_id`) and (`l1`.`event_number` = `l2`.`max_event_number`));
 
