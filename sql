@@ -54,8 +54,8 @@ create table t_lottery_result
 	id int(7) not null auto_increment
 		primary key,
 	event_number_id int(7) null,
-	loto_nubers varchar(30) null,
-	bonus_nubers varchar(15) null,
+	loto_numbers varchar(30) null,
+	bonus_numbers varchar(15) null,
 	update_date datetime default current_timestamp null,
 	insert_date datetime default current_timestamp null,
 	active_flag varchar(1) default 'y' null,
